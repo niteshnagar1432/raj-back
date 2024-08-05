@@ -1,4 +1,4 @@
-import Destination from "../models/destinationmodel.js";
+import Destination from "../models/destinationModel.js";
 import Package from "../models/packageModel.js";
 import { deleteImageFromS3, uploadFileToS3 } from "../middlewares/bucket.js";
 

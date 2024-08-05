@@ -3,8 +3,8 @@ import multer from "multer";
 
 // Configure AWS
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_PRIVATE,
+  secretAccessKey: process.env.AWS_SECRET_KEY_PRIVATE,
   region: "ap-south-1",
 });
 

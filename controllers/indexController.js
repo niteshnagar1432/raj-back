@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import Car from "../models/carModel.js";
 import Blog from "../models/blogModel.js";
 import Package from "../models/packageModel.js";
-import Destination from "../models/destinationmodel.js";
+import Destination from "../models/destinationModel.js";
 
 /*****************************AUTH ADMIN**************************/
 

@@ -1,6 +1,6 @@
 import { deleteImageFromS3, uploadFileToS3 } from "../middlewares/bucket.js";
 import Package from "../models/packageModel.js";
-import Destination from "../models/destinationmodel.js";
+import Destination from "../models/destinationModel.js";
 import TripType from "../models/tripTypeModel.js";
 import Offer from "../models/offerModel.js";
 
@@ -86,7 +86,6 @@ export const addPackage = async (req, res) => {
         return res
           .status(400)
           .json({ message: "Hot deals should be a boolean" });
-
     }
 
     // validation for images array (upload.array("galleryImages", 5))
@@ -287,7 +286,8 @@ export const updatePackage = async (req, res) => {
       }
     }
     if (description !== undefined) packageToUpdate.description = description;
-    if (partialPayment !== undefined) packageToUpdate.partialPayment = partialPayment;
+    if (partialPayment !== undefined)
+      packageToUpdate.partialPayment = partialPayment;
     if (nights !== undefined) packageToUpdate.nights = nights;
     if (days !== undefined) packageToUpdate.days = days;
     if (flightTrain !== undefined) packageToUpdate.flightTrain = flightTrain;
@@ -496,13 +496,13 @@ export const applyOfferToPackages = async (req, res) => {
         .json({ success: false, message: "One or more packages not found" });
     }
 
-    const packagesWithOffer = packages.filter(pkg => pkg.offer);
+    const packagesWithOffer = packages.filter((pkg) => pkg.offer);
 
     if (packagesWithOffer.length > 0) {
       return res.status(400).json({
         success: false,
         message: "One or more packages already have an offer applied",
-        packagesWithOffer: packagesWithOffer.map(pkg => pkg._id),
+        packagesWithOffer: packagesWithOffer.map((pkg) => pkg._id),
       });
     }
 
@@ -529,7 +529,6 @@ export const applyOfferToPackages = async (req, res) => {
   }
 };
 
-
 // ============================== REMOVE OFFER FROM PACKAGE =================================
 
 export const removeOfferFromPackages = async (req, res) => {
@@ -550,17 +549,17 @@ export const removeOfferFromPackages = async (req, res) => {
         .json({ success: false, message: "One or more packages not found" });
     }
 
-    const packagesWithoutOffer = packages.filter(pkg => !pkg.offer);
+    const packagesWithoutOffer = packages.filter((pkg) => !pkg.offer);
 
     if (packagesWithoutOffer.length > 0) {
       return res.status(400).json({
         success: false,
         message: "One or more packages have no offer applied",
-        packagesWithoutOffer: packagesWithoutOffer.map(pkg => pkg._id),
+        packagesWithoutOffer: packagesWithoutOffer.map((pkg) => pkg._id),
       });
     }
 
-    const offerIds = [...new Set(packages.map(pkg => pkg.offer))];
+    const offerIds = [...new Set(packages.map((pkg) => pkg.offer))];
 
     await Package.updateMany(
       { _id: { $in: packageIds } },
@@ -571,7 +570,7 @@ export const removeOfferFromPackages = async (req, res) => {
     const remainingOffers = await Package.find({ offer: { $in: offerIds } });
 
     const offerIdsToDelete = offerIds.filter(
-      offerId => !remainingOffers.some(pkg => pkg.offer.equals(offerId))
+      (offerId) => !remainingOffers.some((pkg) => pkg.offer.equals(offerId))
     );
 
     if (offerIdsToDelete.length > 0) {
@@ -590,7 +589,6 @@ export const removeOfferFromPackages = async (req, res) => {
     });
   }
 };
-
 
 // ============================== ACTIVE INACTIVE PACKAGES =================================
 
@@ -635,7 +633,7 @@ export const updatePackageStatus = async (req, res) => {
       error,
     });
   }
-}
+};
 
 // ============================== Featured Packages =================================
 
@@ -648,13 +646,17 @@ export const updateFeaturedPackages = async (req, res) => {
     }
 
     if (status !== true && status !== false) {
-      return res.status(400).json({ message: "Status should be either true or false" });
+      return res
+        .status(400)
+        .json({ message: "Status should be either true or false" });
     }
 
-    const packageToUpdate = await Package.findById(packageId)
+    const packageToUpdate = await Package.findById(packageId);
 
     if (!packageToUpdate) {
-      return res.status(400).json({ success: false, message: "Package not found" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Package not found" });
     }
 
     packageToUpdate.isFeatured = status;
@@ -665,16 +667,14 @@ export const updateFeaturedPackages = async (req, res) => {
       success: true,
       message: "Package featured status updated successfully",
     });
-
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong, please try again",
       error,
     });
   }
-}
+};
 
 export const getFeaturedPackages = async (req, res) => {
   try {
@@ -697,7 +697,7 @@ export const getFeaturedPackages = async (req, res) => {
       error,
     });
   }
-}
+};
 
 export const updateRajasthaniPackages = async (req, res) => {
   try {
@@ -708,13 +708,17 @@ export const updateRajasthaniPackages = async (req, res) => {
     }
 
     if (status !== true && status !== false) {
-      return res.status(400).json({ message: "Status should be either true or false" });
+      return res
+        .status(400)
+        .json({ message: "Status should be either true or false" });
     }
 
-    const packageToUpdate = await Package.findById(packageId)
+    const packageToUpdate = await Package.findById(packageId);
 
     if (!packageToUpdate) {
-      return res.status(400).json({ success: false, message: "Package not found" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Package not found" });
     }
 
     packageToUpdate.isRajasthani = status;
@@ -725,16 +729,14 @@ export const updateRajasthaniPackages = async (req, res) => {
       success: true,
       message: "Package Rajasthani status updated successfully",
     });
-
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong, please try again",
       error,
     });
   }
-}
+};
 
 export const getRajasthaniPackages = async (req, res) => {
   try {
@@ -757,11 +759,11 @@ export const getRajasthaniPackages = async (req, res) => {
       error,
     });
   }
-}
+};
 
 export const FilterPackages = async (req, res) => {
   try {
-    const { destination, tripType, hotDeals, price ,searchQuery} = req.body;
+    const { destination, tripType, hotDeals, price, searchQuery } = req.body;
 
     let query = {};
 
@@ -784,17 +786,15 @@ export const FilterPackages = async (req, res) => {
     if (price === "highToLow") {
       sort = { "costOptions.totalPrice": -1 };
     }
-    if(searchQuery){
+    if (searchQuery) {
       query.title = new RegExp(searchQuery, "i");
     }
-
 
     const packages = await Package.find(query)
       .populate("destination")
       .populate("tripType")
       .populate("offer")
       .sort(sort);
-
 
     return res.status(200).json({ success: true, packages });
   } catch (error) {
